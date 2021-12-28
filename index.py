@@ -33,4 +33,10 @@ def on_new_message(message):
     print(message)
 
 chat_name = input('\nEnter the chat name: ').strip().lower()
-connection.join_in_chat(on_new_message_callback=on_new_message, on_failure_callback=on_failure, name=chat_name)
+connection.join_in_chat(on_new_message_callback=on_new_message, on_failure_callback=on_failure, chat_name=chat_name)
+
+
+# Getting user message to publish
+while True:
+    message = input('Please, enter a message: ')
+    connection.send_message_to_chat(username=my_user_name, chat_name=chat_name, message=message)
