@@ -9,6 +9,12 @@ class Connection:
     __PUBLIC_CHAT_WITH_ALL_USERS = 'all'
     
     def __init__(self, host: str = 'localhost', port: int = 6379) -> None:
+        """Start a new Redis connection
+
+        Args:
+            host (str, optional): The host connection URL. Defaults to 'localhost'.
+            port (int, optional): The host connection PORT. Defaults to 6379.
+        1"""
         self.__users_list_control = 'users'
         self.__connection = Redis(host=host, port=port)
         self.__pubsub_client = self.__connection.pubsub()
@@ -35,8 +41,8 @@ class Connection:
 
         Args:
             on_new_message_callback (FunctionType): A function to hanle new messages that will be receive an unique dict parameter as a message
-            on_failure_callback (FunctionType): [description]
-            name (str, optional): The chat name to join. Defaults to __PUBLIC_CHAT_WITH_ALL_USERS.
+            on_failure_callback (FunctionType): A function to handle any exception on receive message process
+            name (str, optional): The chat name to join. Defaults to __PUBLIC_CHAT_WITH_ALL_USERS
         """
         self.__pubsub_client.psubscribe(**{name: on_new_message_callback})
         chat_thread = self.__pubsub_client.run_in_thread(sleep_time=0.001, daemon=True, exception_handler=on_failure_callback)
